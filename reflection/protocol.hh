@@ -233,8 +233,7 @@ struct wrapper_bases : MemberBases... {};
 // Two bases defining a member of the same name make that name ambiguous to
 // look up through the derived class, so overloaded methods are unsupported
 // for now.
-template <std::meta::info InterfaceType, typename ProtocolType,
-          typename Vtable>
+template <std::meta::info InterfaceType, typename ProtocolType, typename Vtable>
 consteval std::meta::info generate_wrapper_bases() {
   std::vector<std::meta::info> member_base_types;
 
@@ -250,7 +249,7 @@ consteval std::meta::info generate_wrapper_bases() {
                     std::views::filter(std::meta::has_identifier))) {
     member_base_types.push_back(
         ^^typename member_base_generator<member, ProtocolType,
-                                        Vtable>::member_base);
+                                         Vtable>::member_base);
   }
   return substitute(^^wrapper_bases, member_base_types);
 }
@@ -467,9 +466,9 @@ class protocol : public detail::protocol_wrappers_t<
 };
 
 template <typename T>
-class protocol_view : public detail::protocol_wrappers_t<
-                          T, protocol_view<T>,
-                          typename detail::vtable_generator<T>::vtable> {
+class protocol_view
+    : public detail::protocol_wrappers_t<
+          T, protocol_view<T>, typename detail::vtable_generator<T>::vtable> {
  public:
   // The default constructor is deleted as a default constructed
   // `protocol_view` would be empty.
